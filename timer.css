@@ -1,0 +1,51 @@
+.timer {
+  height: 98vh;
+  background-color: rgba(190, 52, 89, 0.4);
+  width: 100%;
+  z-index: -2;
+  top: 0;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #be3459;
+}
+.timer.none {
+  display: none;
+}
+.timer .num {
+  font-size: 8rem;
+  border-bottom: #be3459 solid 4px;
+  border-top: #be3459 solid 4px;
+  height: 200px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.timer .none {
+  display: none;
+}
+.timer .anim {
+  -webkit-animation: anim 1s linear forwards;
+          animation: anim 1s linear forwards;
+}
+
+@-webkit-keyframes anim {
+  0%, 100% {
+    height: 0px;
+  }
+  50% {
+    height: 200px;
+  }
+}
+
+@keyframes anim {
+  0%, 100% {
+    height: 0px;
+  }
+  50% {
+    height: 200px;
+  }
+}/*# sourceMappingURL=timer.css.map */

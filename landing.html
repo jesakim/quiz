@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="landing.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="container">
+        <h1 class="text">Welcome to AWS Cloud Practitioner<br> Knowledge Test</h1>
+        <h3 class="text">Entre your name below and see how many questions <br>you can answer correctly out of 10 !</h3>
+        <div class="error" >Username should contain only letters and whitespaces ( 3 characters min )</div>
+    <div class="form-outline">
+        
+        <input type="text" id="loginName" class="" placeholder=" "/>
+        <label class="form-label" for="loginName" id="NameLabel">Your Name</label>
+    </div>
+
+    <button onmouseenter="hover1(this.firstElementChild)" onmouseleave="nothover1(this.firstElementChild)" onclick="checkname()" class="btn">
+        <div id="" class="hover1"></div>
+        <span id="btntext">Start Now</span>
+    </button>
+
+</div>
+
+
+
+    <figure class="block__footer__figure">
+        <img src="assets/footer-ornament.a133ddf1.svg" alt="footer ornament" style="width: 100%;">
+    </figure>
+    <script>
+        function hover1(str){
+        str.classList.add('hov')
+        str.classList.remove('nothov')
+    }
+    function nothover1(str){
+        str.classList.add('nothov')
+        str.classList.remove('hov')
+    }
+    function checkname(){
+    var input = document.getElementById('loginName');
+    if(/^([a-zA-Z0-9]{3,})$/.test(input.value)){
+        document.cookie ="username=" + input.value + ";path=/";
+    }else{
+        error();
+    }
+    }
+
+    function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function checkCookie(name) 
+    {
+      var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      if (match) {
+        return match[2];
+      }else{
+        return 0;
+      }
+   }
+if(checkCookie('username')){
+        console.log(checkCookie('username'))
+        var input = document.getElementById('loginName');
+        input.setAttribute('value',checkCookie('username'))
+
+    }
+async function error(){
+    let error = document.getElementsByClassName('error')[0];
+    error.style.display = 'block';
+    error.style.opacity = 1
+    await sleep(5000)
+    for(let i = 0;i<=1;i=i+0.1){
+            error.style.opacity = 1-i
+            console.log(i)
+            await sleep(50);
+        }
+    error.style.display = 'none'
+}
+
+
+    </script>
+</body>
+</html>
