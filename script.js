@@ -5,6 +5,8 @@ var ans = 'No Response Selected';
 var timerindex = 30;
 var probar ;
 var nextbtn ;
+var audio = new Audio('assets/countdown.mp3');
+audio.load();
 var container = document.getElementsByClassName('container')[0]
 var result = Array()
 var stepper = document.getElementsByClassName('stepper')
@@ -14,6 +16,7 @@ landing()
 
 
 async function anim(){
+    audio.play();
     container.innerHTML = ``
     var num = document.getElementsByClassName('num');
     var timer = document.getElementsByClassName('timer')[0];
@@ -29,6 +32,7 @@ for (let i=num.length-1;i>=0;i--){
 }
 timer.classList.add('none')
 stepper[1].classList.add('none')
+
 }
 
 // anim();
@@ -123,7 +127,6 @@ async function error(){
 function display(id){
     // let fe = await fetch('data.json')
     // let data = await fe.json()
-    
     probar.classList.add('active');
     probar.classList.remove('speed');
     console.log(probar);
