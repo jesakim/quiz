@@ -108,7 +108,9 @@
         width: 90%;
     }
 
-  
+    .donut{
+        height: 200px;
+        width: 300px;} 
 }
 .donut{
     height: 200px;
@@ -119,7 +121,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    // box-sizing: border-box;
+    // box-sizing: border-box
     
     --percent:0;
     &::after{

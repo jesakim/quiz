@@ -261,3 +261,28 @@ var data = [
         }
 ]
 
+
+// function display(id){
+//   // let fe = await fetch('data.json')
+//   // let data = await fe.json()
+//   // probar.classList.add('active');
+//   // probar.classList.remove('speed');
+//   // console.log(probar);
+//   let output = document.getElementsByClassName('form-check')[0]
+//   if(id>=data.length){id = 0}
+//   output.innerHTML = `
+//   <h1 class="qst" correct="`+data[id].answers.correct+`">`+data[id].question+`</h1>`
+//   for(let i = 0;i<data[id].options.length;i++){
+//           output.innerHTML += `<button class="answers" onmouseenter="hover1(this.firstElementChild)" onmouseleave="nothover1(this.firstElementChild)" onclick="select(this,'`+data[id].options[i].content+`')" iscorrect="`+iscorrect(data[id].answers.correct,data[id].options[i].id)+`" selected='false'>
+//               <div id="" class="hover1" ></div>
+//               <i class="icon fa-regular fa-circle"></i>
+//               <span id="btntext">`+data[id].options[i].content+`</span>
+//           </button>
+//   `}
+// console.log(id);
+// }
+
+// display(5)
+// console.log('dddd',ddd);
+
+

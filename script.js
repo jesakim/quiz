@@ -1,16 +1,18 @@
 var index = 0
-var randlist = randList(data.length)
-console.log( randlist);
+var randlist = randList(10)
 var ans = 'No Response Selected';
 var timerindex = 30;
 var probar ;
 var nextbtn ;
 var audio = new Audio('assets/countdown.mp3');
 audio.load();
-var container = document.getElementsByClassName('container')[0]
+var container = document.getElementsByClassName('container')[0]    
 var result = Array()
 var stepper = document.getElementsByClassName('stepper')
-landing()
+var correctcount = 0;
+// result.push('Amazon EC2 instances can be launched on demand when needed.')
+// result.push('AWS Database Migration Service (AWS DMS)')
+landing();
 
 // showresult()
 
@@ -21,7 +23,6 @@ async function anim(){
     var num = document.getElementsByClassName('num');
     var timer = document.getElementsByClassName('timer')[0];
     timer.classList.remove('none')
-    console.log(stepper);
     stepper[0].classList.add('none')
     stepper[1].classList.remove('none')
 for (let i=num.length-1;i>=0;i--){
@@ -115,7 +116,6 @@ async function error(){
         await sleep(3000)
         for(let i = 0;i<=1;i=i+0.1){
                 error.style.opacity = 1-i
-                // console.log(i)
                 await sleep(50);
             }
         error.style.display = 'none'
@@ -124,24 +124,22 @@ async function error(){
 
 // rep()
 
-function display(id){
-    // let fe = await fetch('data.json')
-    // let data = await fe.json()
+function display(data){
     probar.classList.add('active');
     probar.classList.remove('speed');
-    console.log(probar);
     let output = document.getElementsByClassName('form-check')[0]
-    if(id>=data.length){id = 0}
     output.innerHTML = `
-    <h1 class="qst" correct="`+data[id].answers.correct+`">`+data[id].question+`</h1>`
-    for(let i = 0;i<data[id].options.length;i++){
-            output.innerHTML += `<button class="answers" onmouseenter="hover1(this.firstElementChild)" onmouseleave="nothover1(this.firstElementChild)" onclick="select(this,'`+data[id].options[i].content+`')" iscorrect="`+iscorrect(data[id].answers.correct,data[id].options[i].id)+`" selected='false'>
+    <h1 class="qst" >`+data.content+`</h1>`
+    for(let i = 0;i<4;i++){
+        let answer = 'answer_'+(i+1)
+        let isco = 'iscorrect'+(i+1)
+            output.innerHTML += `<button class="answers" onmouseenter="hover1(this.firstElementChild)" onmouseleave="nothover1(this.firstElementChild)" onclick="select(this,'`+data[answer]+`')" iscorrect="`+(data[isco]==1)+`" selected='false'>
                 <div id="" class="hover1" ></div>
                 <i class="icon fa-regular fa-circle"></i>
-                <span id="btntext">`+data[id].options[i].content+`</span>
-            </button>
-    `}
-console.log(id);
+                <span id="btntext">`+data[answer]+`</span>
+            </button>`
+
+}
 }
 
 
@@ -156,7 +154,6 @@ function timer(){
         timerindex--;
         
     }
-    console.log(timerindex);
 }
 
 
@@ -195,59 +192,52 @@ function rep(){
     },10)
     probar.classList.remove('active')
     
-    if(index == data.length){
+    if(index == 10){
         clearInterval(myinter)
         showresult();
     }
     ans = 'No Response Selected';
-    display(randlist[index])
+    getText(randlist[index])
     index++
     timerindex = 30;
     
 }
 
+async function getText(ind) {
+    let myObject = await fetch('data.php');
+    let myText = await myObject.text();
+    let json = JSON.parse(myText)
+    display(json[ind]);
+  }
+
+
+
+
+async function getData(){
+    let myObject = await fetch('data.php');
+    let myText = await myObject.text();
+    let json = JSON.parse(myText)
+    
+    for (let index = 0; index < 10; index++) {
+        printresult(json[index],index);
+    }
+    
+}
+
 function showresult(){
         container.innerHTML = '';
-        let correctcount = 0;
         container.innerHTML = `
         <div class="donut" style="--percent:50">
         <p class="donuttxt">5/10</p> 
         </div>`;
-        container.innerHTML += '<h1 class="goodjob" ></h1>';
-        
-        for(let i =0;i<data.length;i++){
-            let iscorrect;
-            let icon;
-            if(data[i].options[data[i].answers.correct-1].content == result[i]){
-                iscorrect = 'correct';
-                icon = 'check'
-                correctcount++;
-            }else{
-                iscorrect = 'false';
-                icon = 'xmark'
-            }
-            container.innerHTML +=`
-            <div class="dropbtn `+iscorrect+`" onclick="showdropdown(this)">
-            <i class="icon right fa-regular fa-circle-`+icon+`"></i>
-            <p class="broptxt">`+data[i].question+`</p>
-            <i class="icon left fa-solid fa-chevron-down"></i>
-        </div>
-        <div class="dropdown">
-                <span class="itemstxt" >Your answer</span>
-                <div class="items yours">`+result[i]+`</div>
-                <span class="itemstxt" >Correct answer</span>
-                <div class="items correct">`+data[i].options[data[i].answers.correct-1].content+`</div>
-                <span class="itemstxt" >Explanation</span>
-                <div class="items exp">`+data[i].answers.comment+`</div>
-        </div>
-            `
-        }
+        container.innerHTML += '<h1 class="goodjob" ></h1>';   
+        getData().then(()=>{
         document.getElementsByClassName('stepper')[2].classList.remove('none')
         document.getElementsByClassName('stepper')[0].classList.add('none')
         document.getElementsByClassName('block__footer__figure')[0].classList.add('none')
-        document.getElementsByClassName('donut')[0].style.setProperty('--percent',correctcount*10)
-        document.getElementsByClassName('donut')[0].children[0].innerText = correctcount+'/10';
-        var h1str
+        document.getElementsByClassName('donut')[0].style.setProperty('--percent',correctcount * 10)
+        document.getElementsByClassName('donut')[0].children[0].innerText =correctcount + '/10';
+        var h1str;
         if(correctcount == 0){
             h1str = 'Good Luck Next Time '+checkCookie('username') 
         }else if(correctcount > 0 && correctcount <5){
@@ -257,9 +247,41 @@ function showresult(){
         }else{
             h1str = 'perfect joob '+checkCookie('username')
         }
-        document.getElementsByClassName('goodjob')[0].innerText = h1str;
+        document.getElementsByClassName('goodjob')[0].innerText = h1str;})
     } 
-        
+    
+    
+function printresult(data,i){
+    let iscorrect;
+            let icon;
+            if(data.correct_ans == result[i]){
+                iscorrect = 'correct';
+                icon = 'check'
+                correctcount ++;
+            }else{
+                iscorrect = 'false';
+                icon = 'xmark'
+            }
+            container.innerHTML +=`
+            <div class="dropbtn `+iscorrect+`" onclick="showdropdown(this)">
+            <i class="icon right fa-regular fa-circle-`+icon+`"></i>
+            <p class="broptxt">`+data.content+`</p>
+            <i class="icon left fa-solid fa-chevron-down"></i>
+        </div>
+        <div class="dropdown">
+                <span class="itemstxt" >Your answer</span>
+                <div class="items yours">`+result[i]+`</div>
+                <span class="itemstxt" >Correct answer</span>
+                <div class="items correct">`+data.correct_ans+`</div>
+                <span class="itemstxt" >Explanation</span>
+                <div class="items exp">`+data.exp+`</div>
+        </div>
+            `
+}
+
+
+
+
 function showdropdown(element){
             element.nextElementSibling.classList.toggle('showen');
             element.children[2].classList.toggle('showen');
@@ -289,7 +311,6 @@ function answersColoring(){
     probar.classList.remove('active');
     probar.classList.add('speed');
     let answers = document.getElementsByClassName('answers');
-    // console.log(answers.length);
     for(let i =0;i<answers.length;i++){
         if((answers[i].getAttribute('selected')=='true')&& (answers[i].getAttribute('iscorrect')=='false')){
             answers[i].classList.add('false')
@@ -304,8 +325,6 @@ function answersColoring(){
     timerindex = 6;
     result[randlist[index-1]] = ans;
     ans = 'No Response Selected';
-    console.log(result);
-    console.log(result.length);
 
 }
 
