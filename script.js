@@ -12,9 +12,12 @@ var stepper = document.getElementsByClassName('stepper')
 var correctcount = 0;
 // result.push('Amazon EC2 instances can be launched on demand when needed.')
 // result.push('AWS Database Migration Service (AWS DMS)')
+
+// result = ['Users can permanently run enough instances to handle peak workloads', 'Amazon EC2.', 'AWS SDK', 'AWS Direct Connect', 'Securing application access and data', 'Edge locations', 'Audit AWS Identity and Access Management (IAM) roles', 'AWS Identity and Access Management (AWS IAM)', 'AWS CloudTrail', 'AWS Billing Console']
+
 landing();
 
-// showresult()
+// showresult();
 
 
 async function anim(){
@@ -204,17 +207,17 @@ function rep(){
 }
 
 async function getText(ind) {
-    let myObject = await fetch('data.php');
+    let myObject = await fetch('data.php?fetch=getalldata');
     let myText = await myObject.text();
     let json = JSON.parse(myText)
     display(json[ind]);
-  }
+}
 
 
 
 
 async function getData(){
-    let myObject = await fetch('data.php');
+    let myObject = await fetch('data.php?fetch=getalldata');
     let myText = await myObject.text();
     let json = JSON.parse(myText)
     
@@ -224,14 +227,24 @@ async function getData(){
     
 }
 
-function showresult(){
+// async function getResult(){
+//     let myObject = await fetch('data.php?fetch='+JSON.stringify(result));
+//     let myText = await myObject.text();
+//     let json = JSON.parse(myText)
+//     console.log(json);   
+// }
+
+// getResult()
+
+async function showresult(){
         container.innerHTML = '';
         container.innerHTML = `
         <div class="donut" style="--percent:50">
         <p class="donuttxt">5/10</p> 
         </div>`;
         container.innerHTML += '<h1 class="goodjob" ></h1>';   
-        getData().then(()=>{
+        await getData()
+        // .then(()=>{
         document.getElementsByClassName('stepper')[2].classList.remove('none')
         document.getElementsByClassName('stepper')[0].classList.add('none')
         document.getElementsByClassName('block__footer__figure')[0].classList.add('none')
@@ -247,7 +260,8 @@ function showresult(){
         }else{
             h1str = 'perfect joob '+checkCookie('username')
         }
-        document.getElementsByClassName('goodjob')[0].innerText = h1str;})
+        document.getElementsByClassName('goodjob')[0].innerText = h1str;
+    // })
     } 
     
     
@@ -285,6 +299,7 @@ function printresult(data,i){
 function showdropdown(element){
             element.nextElementSibling.classList.toggle('showen');
             element.children[2].classList.toggle('showen');
+            element.classList.toggle('droped');
     }
     var mytimout
 function next(){
@@ -294,7 +309,6 @@ function next(){
     nextbtn.innerHTML =`Next <i class="fa-solid fa-chevron-right"></i>`
     answersColoring();
     mytimout = setTimeout(rep, 5000);
-    
 }
 
 function forceNext(){
@@ -312,6 +326,7 @@ function answersColoring(){
     probar.classList.add('speed');
     let answers = document.getElementsByClassName('answers');
     for(let i =0;i<answers.length;i++){
+        answers[i].classList.remove('selected')
         if((answers[i].getAttribute('selected')=='true')&& (answers[i].getAttribute('iscorrect')=='false')){
             answers[i].classList.add('false')
             answers[i].children[1].classList = "icon fa-regular fa-circle-xmark";

@@ -29,5 +29,24 @@ class dbcon{
         return $res;
     }
 
+    static public function getresult($ques){
+        $sql = 'SELECT * FROM `responses` WHERE content = ?;';
+        $exe = self::conn() -> prepare($sql);
+        $exe ->execute([$ques]);
+        $res = $exe->fetch();
+        return $res['iscorrect'];
+    }
+
+
 }
-echo json_encode(dbcon::getdata());
+if(isset($_GET['fetch'])){
+    if($_GET['fetch']=='getalldata'){
+    echo json_encode(dbcon::getdata());}
+    else{ $arr = json_decode($_GET['fetch']);
+        $t=0;
+        foreach($arr as $ar){
+            $t+= dbcon::getresult($ar);
+        }
+        echo $t;
+    }
+}

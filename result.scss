@@ -19,6 +19,7 @@
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
+    transition: all 1s;
     &.correct{
         background-color: greenyellow;
         color: rgb(0, 0, 0);
@@ -26,6 +27,9 @@
     &.false{
         background-color: rgb(255, 60, 60);
         color: rgb(255, 255, 255);
+    }
+    &.droped{
+        border-radius: 20px 20px 0px 0px;
     }
     .broptxt{
         font-size: larger;
@@ -90,6 +94,7 @@
 .icon{
     color: rgb(255, 255, 255);
     font-size: x-large;
+    transition: all 1s;
     &.left{
         margin-left: 10px ;
     }
